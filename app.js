@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
-// const fs = require("fs");
-// const generatePage = require("./src/page-template.js");
+const fs = require("fs");
+const generatePage = require("./src/page-template.js");
 
 // const pageHTML = generatePage(name, github);
 
@@ -26,7 +26,7 @@ return inquirer.prompt([
         },
         {
             type: "input",
-            name: "GitHub Username",
+            name: "github", //may need to change to "github" EDIT: may need to change to Github Username later
             message: "Enter your Github Username",
             validate: githubInput => {
                 if(githubInput) {
@@ -73,7 +73,7 @@ Add a New Project
     return inquirer.prompt([
         {
             type: "input",
-            name: "Project name",
+            name: "name", //May need to be turned into project name
             message: "What is the name of your project?"
         },
         {
@@ -132,10 +132,16 @@ Add a New Project
 };
 
 promptUser()
-    .then(promptProject)
-    .then(portfolioData => {
-        console.log(portfolioData);
+  .then(promptProject)
+  .then(portfolioData => {
+    const pageHTML = generatePage(portfolioData);
+
+    fs.writeFile('./index.html', pageHTML, err => {
+      if (err) throw new Error(err);
+
+      console.log('Page created! Check out index.html in this directory to see it!');
     });
+  });
 
 
 
@@ -173,3 +179,15 @@ promptUser()
 
 // printProfileData(profileDataArgs);
 //FOR REFERENCE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+// promptUser()
+//     .then(promptProject)
+//     .then(portfolioData => {
+//         const pageHTML = generatePage(portfolioData);
+        
+//         // fs.writeFile("./index.html", pageHTML, err => {
+//         //     if(err) throw new Error(err);
+
+//         //     console.log("Page created! Check out index.html in this directory to see it!");
+//         // });
+//     });
